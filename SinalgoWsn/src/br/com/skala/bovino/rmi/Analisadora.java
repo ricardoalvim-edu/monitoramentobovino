@@ -13,5 +13,5 @@ import projects.wsn1.nodes.messages.MessageToSink;
  * @author ricardoalvim
  */
 public interface Analisadora extends Remote{
-    public boolean isOnArea(MessageToSink m) throws RemoteException;
+    public boolean isOnArea(Integer ID, Double X, Double Y) throws RemoteException;
 }

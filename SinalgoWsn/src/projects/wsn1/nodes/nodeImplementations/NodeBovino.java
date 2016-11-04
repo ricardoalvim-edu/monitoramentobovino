@@ -1,6 +1,7 @@
 package projects.wsn1.nodes.nodeImplementations;
 
 import br.com.skala.bovino.rmi.Analisadora;
+import br.com.skala.bovino.rmi.BovinoInfo;
 import java.awt.Color;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -91,7 +92,9 @@ public class NodeBovino extends Node {
             registro = LocateRegistry.getRegistry("Localhost", 1099);
             canal = (Analisadora) registro.lookup("bovino");
             
-            return canal.isOnArea(m);
+            return canal.isOnArea(m.getOrigin().ID, 
+                    m.getOrigin().getPosition().xCoord, 
+                    m.getOrigin().getPosition().yCoord);
         } catch (RemoteException ex) {
             Logger.getLogger(NodeBovino.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {

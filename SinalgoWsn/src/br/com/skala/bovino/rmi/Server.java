@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import javax.swing.JOptionPane;
 import projects.wsn1.nodes.messages.MessageToSink;
 import sinalgo.nodes.Position;
 
@@ -19,20 +20,19 @@ import sinalgo.nodes.Position;
 public class Server implements Analisadora{
 
     @Override
-    public boolean isOnArea(MessageToSink m) throws RemoteException {
-        Position p = m.getOrigin().getPosition();
+    public boolean isOnArea(Integer ID, Double X, Double Y) throws RemoteException {
         
-        System.out.println("Bovino #"+m.getOrigin().ID);
-        if (p.xCoord < 15.00){
+        System.out.println("Server - Bovino #"+ID);
+        if (X < 15.00){
             return true;
         }
-        else if (p.yCoord < 15.00){
+        else if (Y< 15.00){
             return true;
         }   
-        else if (p.xCoord > 85.00){
+        else if (X > 85.00){
             return true;
         }   
-        else if (p.yCoord > 85.00){
+        else if (Y > 85.00){
             return true;
         }      
         return false;
@@ -43,7 +43,7 @@ public class Server implements Analisadora{
         try {
             
             Analisadora canal = (Analisadora) UnicastRemoteObject.exportObject(s, 0);            
-            Registry registro = LocateRegistry.createRegistry(1099);          
+            Registry registro = LocateRegistry.createRegistry(1099);        
             registro.bind("bovino", canal);
             
             System.out.println("Servidor pronto!");
