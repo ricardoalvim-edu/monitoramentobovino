@@ -1,39 +1,31 @@
-package projects.wsn1.nodes.nodeImplementations;
+                                                                                                                                                                                                package projects.wsn1.nodes.nodeImplementations;
 
 import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import projects.wsn1.nodes.messages.MessageMap;
-import projects.wsn1.nodes.messages.MessageToSink;
-import projects.wsn1.nodes.timers.MsgMapTimer;
+import projects.wsn1.nodes.messages.Map;
+import projects.wsn1.nodes.messages.ToSink;
+import projects.wsn1.nodes.timers.MapTimer;
 import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.messages.Inbox;
 import sinalgo.nodes.messages.Message;
-import sinalgo.tools.logging.Logging;
 
 public class Sink extends Node {
-    
+    //caminho para ir para o primeiro sink
     private Node prxUpToBase;
-    private MsgMapTimer timer;
-    
+    private MapTimer timer;    
     private int nFloo;
-    private int contTime = 10;
-    
-    private static final String dataPath = "C:\\SinalGo\\Dados.txt";
+    private int contTime = 10;    
+    private static final String dataPath = "C:\\SinalGo\\Data.txt";
     
     @Override
     public void handleMessages(Inbox inbox) {
         while (inbox.hasNext()) {
             Message message = inbox.next();
             
-            if(message instanceof MessageToSink) {
-                MessageToSink msg = (MessageToSink) message;
+            if(message instanceof ToSink) {
+                ToSink msg = (ToSink) message;
                 
                 this.writeFile(this.dataPath, generateMessage(msg.getOrigin().ID, 
                         msg.getOrigin().getPosition().xCoord, msg.getOrigin().getPosition().yCoord));
@@ -53,43 +45,21 @@ public class Sink extends Node {
         //Atenção! Bovino saindo dos limites!
         this.setColor(Color.YELLOW);
         this.prxUpToBase = this;
-        this.nFloo = 0;
-        this.flood();
-    }
-    
-    @Override
-    public void neighborhoodChange() {}
-
-    @Override
-    public void postStep() {
-        this.flood();
-    }
-    
-    private void flood() {
-        if (this.contTime == 10) {
-            System.out.println("==================[FLOODING] - " + this.nFloo);
+        this.nFloo = 0;        
+        this.contTime = 0;
             
-            this.contTime = 0;
-            
-            MessageMap msg = new MessageMap(this, 0, this.nFloo);
-            MsgMapTimer timer = new MsgMapTimer(msg);
-
-            this.nFloo++;
-            
-            timer.startRelative(1, this);
-        }
+        Map msg = new Map(this, 0, this.nFloo);
+        MapTimer timer = new MapTimer(msg);
         
-        this.contTime++;
+        timer.startRelative(1, this);
     }
     
-    @Override
-    public void checkRequirements() throws WrongConfigurationException {}
-    
+    //Método escritor de arquivo
     public static void writeFile(String path, String data) {
         try {
-            FileWriter fw = new FileWriter(path, true);            
+            FileWriter escritor = new FileWriter(path, true);            
             //objeto do buffer de escrita
-            BufferedWriter conn = new BufferedWriter(fw);            
+            BufferedWriter conn = new BufferedWriter(escritor);            
             //escreve dados (string) no buffer de saída
             conn.write(data);
             //escreve nova linha
@@ -100,5 +70,25 @@ public class Sink extends Node {
             e.printStackTrace();
         }
     }
+    
+    @Override
+    public void neighborhoodChange() {}
+
+    @Override
+    public void postStep() {
+        if (this.contTime == 10) {            
+            this.contTime = 0;
+            
+            Map message = new Map(this, 0, this.nFloo);
+            MapTimer t = new MapTimer(message);
+
+            this.nFloo++;
+            
+            t.startRelative(1, this);
+        }        
+        this.contTime++;
+    }
+    @Override
+    public void checkRequirements() throws WrongConfigurationException {}
 
 }

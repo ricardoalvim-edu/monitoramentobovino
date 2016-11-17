@@ -10,7 +10,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import javax.swing.JOptionPane;
-import projects.wsn1.nodes.messages.MessageToSink;
+import projects.wsn1.nodes.messages.ToSink;
 import sinalgo.nodes.Position;
 
 /**
@@ -24,18 +24,26 @@ public class Server implements Analisadora{
         
         System.out.println("Server - Bovino #"+ID);
         if (X < 15.00){
-            return true;
+            this.showMsgOutside(ID);
+            return false;
         }
         else if (Y< 15.00){
-            return true;
+            this.showMsgOutside(ID);
+            return false;
         }   
         else if (X > 85.00){
-            return true;
+            this.showMsgOutside(ID);
+            return false;
         }   
         else if (Y > 85.00){
-            return true;
+            this.showMsgOutside(ID);
+            return false;
         }      
-        return false;
+        return true;
+    }
+    
+    public void showMsgOutside(Integer ID){
+        System.out.println("O bovino #"+ID+ " está fora do pasto!");
     }
     
     public static void main(String[] args) {

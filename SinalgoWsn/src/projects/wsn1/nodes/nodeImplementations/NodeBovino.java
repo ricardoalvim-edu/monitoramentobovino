@@ -8,15 +8,15 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import projects.wsn1.nodes.timers.sendMsgToSink;
+import projects.wsn1.nodes.timers.SendToSink;
 import java.util.Random;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import projects.wsn1.nodes.messages.MessageMap;
-import projects.wsn1.nodes.messages.MessageToSink;
-import projects.wsn1.nodes.timers.MessageToSinkTimer;
+import projects.wsn1.nodes.messages.Map;
+import projects.wsn1.nodes.messages.ToSink;
+import projects.wsn1.nodes.timers.ToSinkTimer;
 import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.Position;
@@ -25,8 +25,7 @@ import sinalgo.nodes.messages.Message;
 
 public class NodeBovino extends Node {
 
-    private Node prxUpToBase = null;
-    
+    private Node prxUpToBase = null;    
     private long saltUpToBase = 0;    
     private int nFloo = 0;
     private Integer seqNum    = 0;
@@ -36,46 +35,41 @@ public class NodeBovino extends Node {
         while (inbox.hasNext()) {
             Message message = inbox.next();
             
-            if (message instanceof MessageMap) {
-                MessageMap msg = (MessageMap) message;
+            if (message instanceof Map) {
+                Map msg = (Map) message;
                 Boolean send = true;
                 
                 if (msg.nFloo == this.nFloo) {
-                    if (msg.forwardingHop.equals(this) || this.saltUpToBase > 0) {
+                    if (msg.fwHop.equals(this) || this.saltUpToBase > 0) {
                         send = false;
                     } else {
-                        this.saltUpToBase    = msg.salto;
-                        this.prxUpToBase = msg.forwardingHop;
-                        msg.forwardingHop = this;
-                        
+                        this.saltUpToBase    = msg.salt;
+                        this.prxUpToBase = msg.fwHop;
+                        msg.fwHop = this;                        
                         send = true;
                     }
                 } else {
                     this.nFloo = msg.nFloo;
-                    
-                    this.saltUpToBase    = msg.salto;
-                    this.prxUpToBase = msg.forwardingHop;
-                    msg.forwardingHop = this;
-
+                    this.saltUpToBase    = msg.salt;
+                    this.prxUpToBase = msg.fwHop;
+                    msg.fwHop = this;
                     send = true;
                 }
                 
-                if (send) {
-                    System.out.println("========[PASSOU]");
-                    
+                if (send) {                    
                     broadcast(msg);
 
-                    MessageToSink msgtosync = new MessageToSink(this);
-                    MessageToSinkTimer msgtimer = new MessageToSinkTimer(this.prxUpToBase, msgtosync);
+                    ToSink msgtosync = new ToSink(this);
+                    ToSinkTimer msgtimer = new ToSinkTimer(this.prxUpToBase, msgtosync);
                                         
                     Timer timer = new Timer();
 
                     Random random = new Random();
                     long tempo = (random.nextInt(10) + 1) * 1000;
 
-                    timer.schedule(new sendMsgToSink(msgtimer, this), tempo);
+                    timer.schedule(new SendToSink(msgtimer, this), tempo);
                     
-                    if (isOnArea (msgtosync)){
+                    if (!isOnArea (msgtosync)){
                         this.setColor(Color.RED);
                     }else{
                         this.setColor(Color.getHSBColor(121, 85, 72));
@@ -85,13 +79,15 @@ public class NodeBovino extends Node {
         }
     }
     
-    public boolean isOnArea(MessageToSink m){
+    //método que conecta com a classe analisadora do server para obtenção de coordenadas do bovino
+    public boolean isOnArea(ToSink m){
         Registry registro;
         Analisadora canal;
         try {
+            //conectar com Localhost:1099
             registro = LocateRegistry.getRegistry("Localhost", 1099);
             canal = (Analisadora) registro.lookup("bovino");
-            
+            //ID do boi, X e Y
             return canal.isOnArea(m.getOrigin().ID, 
                     m.getOrigin().getPosition().xCoord, 
                     m.getOrigin().getPosition().yCoord);
@@ -103,6 +99,7 @@ public class NodeBovino extends Node {
         return false;
     }
     
+    //método de apresentação de msg genérica
     public void showMessage(String message){
         System.out.println(message);
     }

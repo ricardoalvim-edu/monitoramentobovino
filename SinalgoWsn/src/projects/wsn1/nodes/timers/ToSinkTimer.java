@@ -1,16 +1,16 @@
 package projects.wsn1.nodes.timers;
 
-import projects.wsn1.nodes.messages.MessageToSink;
+import projects.wsn1.nodes.messages.ToSink;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.timers.Timer;
 
-public class MessageToSinkTimer extends Timer {
-
+public class ToSinkTimer extends Timer {
     //para o sink que receberá a mensagem 
     private Node target;
-    private MessageToSink message;
+    //msg a ser enviada para o sink
+    private ToSink message;
 
-    public MessageToSinkTimer(Node target, MessageToSink message) {
+    public ToSinkTimer(Node target, ToSink message) {
         this.target = target;
         this.message = message;
     }
@@ -18,6 +18,5 @@ public class MessageToSinkTimer extends Timer {
     @Override
     public void fire() {
         this.node.send(this.message, this.target);
-    }
-    
+    }    
 }

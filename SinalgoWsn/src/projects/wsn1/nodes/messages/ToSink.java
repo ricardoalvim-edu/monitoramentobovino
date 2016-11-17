@@ -4,18 +4,18 @@ import projects.wsn1.nodes.nodeImplementations.NodeBovino;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.messages.Message;
 
-public class MessageToSink extends Message {
+public class ToSink extends Message {
 
     //Nó que enviou a mensagem
     private Node origin;
 
-    public MessageToSink(Node origin) {
+    public ToSink(Node origin) {
         this.origin = origin;
     }
     
     @Override
     public Message clone() {
-        return new MessageToSink(this.origin);
+        return new ToSink(this.origin);
     }
 
     public Node getOrigin() {
