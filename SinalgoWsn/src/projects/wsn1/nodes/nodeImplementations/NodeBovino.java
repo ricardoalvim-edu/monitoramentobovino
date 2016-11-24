@@ -1,9 +1,7 @@
 package projects.wsn1.nodes.nodeImplementations;
 
 import br.com.skala.bovino.rmi.Analisadora;
-import br.com.skala.bovino.rmi.BovinoInfo;
 import java.awt.Color;
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -13,13 +11,11 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import projects.wsn1.nodes.messages.Map;
 import projects.wsn1.nodes.messages.ToSink;
 import projects.wsn1.nodes.timers.ToSinkTimer;
 import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.nodes.Node;
-import sinalgo.nodes.Position;
 import sinalgo.nodes.messages.Inbox;
 import sinalgo.nodes.messages.Message;
 
@@ -72,7 +68,7 @@ public class NodeBovino extends Node {
                     if (!isOnArea (msgtosync)){
                         this.setColor(Color.RED);
                     }else{
-                        this.setColor(Color.getHSBColor(121, 85, 72));
+                        this.setColor(Color.GREEN);
                     }
                 }
             }
@@ -109,7 +105,7 @@ public class NodeBovino extends Node {
 
     @Override
     public void init() {
-        this.setColor(Color.getHSBColor(121, 85, 72));
+        this.setColor(Color.GREEN);
     }
 
     @Override

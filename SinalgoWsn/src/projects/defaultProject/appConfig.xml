@@ -2,7 +2,7 @@
 <sinalgo>
 	<ProjectSelector windowWidth="980" windowHeight="742" lastChosenProject="wsn1" windowPosX="539" windowPosY="89" isMaximized="false" selectedTab="2" />
 	<GUI windowWidth="800" windowHeight="600" windowPosX="582" windowPosY="145" isMaximized="false" ControlPanelExpandSimulation="true" ControlPanelShowFullViewPanel="true" ControlPanelShowTextPanel="true" ControlPanelShowProjectControl="true" RunOperationIsLimited="false" helpWindowWidth="500" helpWindowHeight="500" helpWindowPosX="200" helpWindowPosY="200" helpWindowIsMaximized="false" />
-	<RandomSeed seedFromPreviousRun="5433795111966932153" />
+	<RandomSeed seedFromPreviousRun="4569526548586757194" />
 	<App lastSelectedFileDirectory="" checkForUpdatesAtStartup="true" updateCheckTimeStamp="1480022896711" runCmdLineArgs="" />
 	<GenNodesDlg numNodes="100" />
 </sinalgo>
