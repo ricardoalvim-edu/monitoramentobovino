@@ -39,12 +39,6 @@ public class Cliente {
                 // Cria um buffer que armazenará as informações retornadas pelo servidor
                 BufferedReader inFromServer = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-                // Atribui as informações armazenadas no buffer do teclado à variável "sentence"
-                //sentence = inFromUSer.readLine();
-
-                // Disponibiliza as informações contidas em "sentence" para a stream de saída do cliente
-                //outToServer.writeBytes(sentence + "\n");
-
                 // Atribui as informações modificadas pelo servidor na variável "modifiedSentence"
                 modifiedSentence = inFromServer.readLine();
                 

@@ -59,7 +59,6 @@ public class Server implements Analisadora{
     public void showMsgOutside(Integer ID){
         String msg = new String("O bovino #"+ID+ " está fora do pasto!");
         sendMsg(msg);
-        System.out.println(msg);
     }
     
     public static void main(String[] args) throws RemoteException {
@@ -86,13 +85,12 @@ public class Server implements Analisadora{
            // Cria um SocketServer (Socket característico de um servidor)
            socket = new ServerSocket(40000);  
    
-           //while(true) {    
-                /* Cria um objeto Socket, mas passando informações características de um servidor,
-                *no qual somente abre uma porta e aguarda a conexão de um cliente 
-                */
-               connectionSocket = socket.accept();
-               sendMsg ("cliente iniciou!");
-           //} 
+
+           /* Cria um objeto Socket, mas passando informações características de um servidor,
+            *no qual somente abre uma porta e aguarda a conexão de um cliente 
+            */
+           connectionSocket = socket.accept();
+           sendMsg ("cliente iniciou!");
       
        } catch (IOException e) {
            // TODO Auto-generated catch block
@@ -107,7 +105,7 @@ public class Server implements Analisadora{
             // Cria uma stream de sáida para retorno das informações ao cliente
             DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             // Faz a leitura das informações enviadas pelo cliente as amazenam na variável "clientSentence"
-            //clientSentence = inFromClient.readLine();
+            
             /* Faz uma modificação na String enviada pelo cliente, simulando um processamento em "back-end"
             * antes de retorná-la ao cliente
             */
