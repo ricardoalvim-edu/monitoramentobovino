@@ -7,7 +7,6 @@ package br.com.skala.bovino.rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import projects.wsn1.nodes.messages.ToSink;
 /**
  *
  * @author ricardoalvim
