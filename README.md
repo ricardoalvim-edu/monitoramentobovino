@@ -4,8 +4,8 @@ servidor RMI e log em arquivo de texto.
 
 -- Instruções --
 Faça o uso da ferramenta NetBeans para abrir o projeto do SinalGo, importe o projeto e inicie os serviços nessa ordem:
-1º Classe do servidor
-2º Classe do cliente
+1º Classe do servidor (está no pacote br.com.skala.bovino.rmi)
+2º Classe do cliente (está no pacote br.com.skala.bovino.rmi)
 3º SinalGo
 
 Com o SinalGo aberto, escolha a opção 'wsn1' no menu lateral e clique em 'Ok'.
